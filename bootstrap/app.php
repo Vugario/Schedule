@@ -15,9 +15,6 @@ $app = new Illuminate\Foundation\Application(
 	realpath(__DIR__.'/../')
 );
 
-// Locale
-setlocale(LC_ALL, 'nl_NL.UTF-8');
-
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

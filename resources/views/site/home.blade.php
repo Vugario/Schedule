@@ -12,8 +12,8 @@
         @foreach ($days as $day => $entries)
             <div class="panel panel-entry">
                 <h4>
-                    {{ App\Library\Date::fromFormat($day, 'd-m')->toHumanFormat() }}
-                    <small class="pull-right">{{ Carbon\Carbon::createFromFormat('d-m', $day)->format('j F') }}</small>
+                    {{ App\Library\Karbon::fromFormat($day, 'd-m')->toHumanFormat() }}
+                    <small class="pull-right">{{ App\Library\Karbon::createFromFormat('d-m', $day)->format('j F') }}</small>
                 </h4>
 
                 <ul>

@@ -4,6 +4,7 @@ use App\Entry;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Library\Karbon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,7 @@ class EntryController extends Controller {
 
 	protected function getDates()
 	{
-		$timestamp = Carbon::now()->subDay();
+		$timestamp = Karbon::now()->subDay();
 		$dates = ['Wanneer?'];
 
 		for ($i = 0; $i < 150; $i++)
@@ -51,7 +52,7 @@ class EntryController extends Controller {
 
 	protected function getTimes()
 	{
-		$timestamp = Carbon::create(date('Y'), date('m'), date('d'), 6, 0);
+		$timestamp = Karbon::create(date('Y'), date('m'), date('d'), 6, 0);
 		$times = ['Vanaf hoelaat?'];
 
 		for ($i = 0; $i < 68; $i++)
