@@ -20,12 +20,24 @@
 <body>
 
 <div class="container">
-	<div class="header clearfix">
-		<a href="#myModal" data-toggle="modal" data-target="#myModal" class="btn btn-default pull-right">Bezoek toevoegen</a>
-		<h4 class="text-muted">Hi {{ Auth::user()->name }}</h4>
-	</div>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="clearfix">
+                @if (Auth::user())
+                    <a href="{{ url('/auth/logout') }}" class="text-muted pull-right"><small>Uitloggen</small></a>
+                @endif
 
-	@yield('content')
+                <a class="text-title" href="{{ url('/') }}">Familie Rotteveel</a>
+            </div>
+            <br>
+
+            <div class="panel panel-default{{ count($errors) > 0 ? ' shake animated' : '' }}">
+                <div class="panel-body">
+	                @yield('content')
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Scripts -->

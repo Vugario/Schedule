@@ -1,39 +1,33 @@
 @extends('app')
 
 @section('content')
+    <h4>Agenda</h4>
+    <p><a href="{{ url('entry/create') }}">Klik hier</a> om een bezoek in te plannen.</p>
 
-    <p>Plan je bezoek aan de Menneweg.</p>
-    <br>
+    @if (Session::has('message'))
+        <p class="text-success">{{ Session::get('message') }}</p>
+    @endif
 
+    @if ($days)
+        @foreach ($days as $day => $entries)
+            <div class="panel panel-entry">
+                <h4>
+                    {{ App\Library\Date::fromFormat($day, 'd-m')->toHumanFormat() }}
+                    <small class="pull-right">{{ Carbon\Carbon::createFromFormat('d-m', $day)->format('j F') }}</small>
+                </h4>
 
-    <div class="panel panel-entry">
-        <h4>Vandaag <small class="pull-right">21 maart</small></h4>
-
-        <ul>
-            <li>Arda en Paul <small>om 15:30</small></li>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-        </ul>
-    </div>
-
-    <div class="panel panel-entry">
-        <h4>Vandaag <small class="pull-right">21 maart</small></h4>
-
-        <ul>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-        </ul>
-    </div>
-
-    <div class="panel panel-entry">
-        <h4>Vandaag <small class="pull-right">21 maart</small></h4>
-
-        <ul>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-            <li><a href="#">Arda en Paul <small>om 15:30</small></a></li>
-        </ul>
-    </div>
+                <ul>
+                    @foreach ($entries as $entry)
+                        <li>
+                            <small>om {{ $entry->visit_at->format('H:i') }}</small>
+                            {{ $entry->description }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endforeach
+    @else
+        <p></p>
+    @endif
 
 @endsection()

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 
 class EntryController extends Controller {
 
@@ -35,14 +36,14 @@ class EntryController extends Controller {
 
 	protected function getDates()
 	{
-		$timestamp = Carbon::now();
+		$timestamp = Carbon::now()->subDay();
 		$dates = ['Wanneer?'];
 
 		for ($i = 0; $i < 150; $i++)
 		{
 			$timestamp = $timestamp->addDay();
 
-			$dates[$timestamp->format('U')] = $timestamp->format('j F');
+			$dates[$timestamp->format('U')] = $timestamp->format('l j F');
 		}
 
 		return $dates;
@@ -50,7 +51,7 @@ class EntryController extends Controller {
 
 	protected function getTimes()
 	{
-		$timestamp = Carbon::create(0, 0, 0, 6, 0);
+		$timestamp = Carbon::create(date('Y'), date('m'), date('d'), 6, 0);
 		$times = ['Vanaf hoelaat?'];
 
 		for ($i = 0; $i < 68; $i++)
@@ -72,20 +73,23 @@ class EntryController extends Controller {
 	{
 		$this->validate($request, [
 			'description'		=> 'required',
-			'date'				=> 'required',
-			'time'				=>	'required'
+			'date'				=> 'required|min:2',
+			'time'				=>	'required|min:2'
 		]);
+
+        $time = Carbon::createFromFormat('U', Input::get('time'));
+        $visitAt = Carbon::createFromFormat('U', Input::get('date'));
+        $visitAt = $visitAt->setTime($time->format('H'), $time->format('i'));
 
 		$entry = [
 			'user_id'		=> Auth::user()->id,
 			'description'	=> Input::get('description'),
-			'date'			=> Input::get('date'),
-			'time'			=> Input::get('time')
+			'visit_at'		=> $visitAt
 		];
 
 		$entry = Entry::create($entry);
 
-		redirect('/')->with('message', 'Je afspraak is toegevoegd!');
+		return redirect('/')->with('message', 'Je afspraak is toegevoegd!');
 	}
 
 	/**
